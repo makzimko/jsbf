@@ -14,6 +14,7 @@ class Brainfuck {
   private readonly memory = new Array(this.memorySize).fill(0);
   private instructionPointer = 0;
   private memoryPointer = 0;
+  private cycles: number[] = [];
   private input: Input;
   private output: Output = (char) => process.stdout.write(char);
 
@@ -68,11 +69,17 @@ class Brainfuck {
             ? this.memorySize - 1
             : this.memoryPointer - 1;
         break;
+      case "[":
+        this.cycles.push(this.instructionPointer);
+        break;
+      case "]":
+        if (this.memory[this.memoryPointer] === 0) {
+          this.cycles.pop();
+        } else {
+          this.instructionPointer = this.cycles[this.cycles.length - 1];
+        }
     }
   }
 }
-
-const program = new Brainfuck(",.>,.>,.>,.>,.").setInput("Hello");
-program.run();
 
 export default Brainfuck;
