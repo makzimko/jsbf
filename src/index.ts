@@ -74,3 +74,5 @@ class Brainfuck {
 
 const program = new Brainfuck(",.>,.>,.>,.>,.").setInput("Hello");
 program.run();
+
+export default Brainfuck;

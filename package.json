@@ -2,8 +2,10 @@
   "name": "jsbf",
   "version": "0.0.0",
   "description": "Javascript Brainfuck interpreter",
-  "main": "main.ts",
+  "main": "./dist/index",
+  "bin": "./dist/bin",
   "scripts": {
+    "build": "node esbuild.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -23,6 +25,7 @@
   },
   "homepage": "https://github.com/makzimko/jsbf#readme",
   "devDependencies": {
+    "esbuild": "^0.25.5",
     "prettier": "^3.5.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
