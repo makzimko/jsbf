@@ -1,0 +1,7 @@
+.idea
+node_modules
+.npmignore
+.prettierignore
+.prettierrc
+esbuild.mjs
+tsconfig.json
