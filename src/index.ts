@@ -1,11 +1,11 @@
-type Input = () => string;
+import standardInput, { Input } from "./input";
 type InputSource = Input | string;
 
 type Output = (char: string) => void;
 
 const fixedInput = (input: string) => {
   let i = 0;
-  return () => input[i++];
+  return () => Promise.resolve(input[i++]);
 };
 
 class Brainfuck {
@@ -15,7 +15,7 @@ class Brainfuck {
   private instructionPointer = 0;
   private memoryPointer = 0;
   private cycles: number[] = [];
-  private input: Input;
+  private input: Input = standardInput;
   private output: Output = (char) => process.stdout.write(char);
 
   constructor(instructions: string) {
@@ -35,15 +35,17 @@ class Brainfuck {
     this.output = output;
   }
 
-  run() {
-    while (this.instructionPointer < this.instructions.length) {
-      this.process(this.instructions[this.instructionPointer++]);
+  async run() {
+    let condition = this.instructionPointer < this.instructions.length;
+    while (condition) {
+      await this.process(this.instructions[this.instructionPointer++]);
+      condition = this.instructionPointer < this.instructions.length;
     }
 
     return this.output;
   }
 
-  private process(command: string) {
+  private async process(command: string) {
     switch (command) {
       case "+":
         this.memory[this.memoryPointer]++;
@@ -55,7 +57,7 @@ class Brainfuck {
         this.output(String.fromCharCode(this.memory[this.memoryPointer]));
         break;
       case ",":
-        this.memory[this.memoryPointer] = this.input().charCodeAt(0);
+        this.memory[this.memoryPointer] = (await this.input()).charCodeAt(0)
         break;
       case ">":
         this.memoryPointer =
